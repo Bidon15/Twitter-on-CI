@@ -1,0 +1,45 @@
+body {
+    background: #b6b6b6;
+    margin: 0;
+    padding: 0;
+    font-family: arial;
+}
+
+#login_form {
+
+    width: 300px;
+    background: #f0f0f0;
+    border: 1px solid #ffffff;
+    margin: 250px auto 0;
+    padding: 1em;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+h1, h2, h3, h4, h5 {
+    margin-top: 0;
+    font-family: arial black, arial;
+    text-align: center;
+}
+
+input[type=text], input[type=password] {
+    display: block;
+    margin: 0 0 1em 0;
+    width: 280px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 1em;
+
+}
+
+input[type=submit]{
+    border: none;
+    margin-right: 1em;
+    padding: 6px;
+    text-decoration: none;
+    font-size: 12px;
+    background: #348075;
+    color: #ffffff;
+    -moz-box-shadow: 0 1px 0 white;
+    -webkit-box-shadow: 0 1px 0 white;
+}
