@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/Twitter-on-CI/';
+$config['base_url']	= 'http://localhost/twitter/';
 
 /*
 |--------------------------------------------------------------------------

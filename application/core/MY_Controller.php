@@ -8,10 +8,49 @@
  */
 
 class MY_Controller extends CI_Controller{
-    public function output()
+
+    public function verify_user(){
+
+
+        if(!$this->session->userdata('username'))
+        {
+            $cookie=$this->input->cookie('user_id');
+            if(isset($cookie))
+            {
+                $this->session->set_userdata(array('user_id' => $cookie));
+                return TRUE;
+            }
+            else
+            {
+            return FALSE;
+            }
+
+
+        }
+        else
+        {
+            return TRUE;
+        }
+
+    }
+
+    public function check_permission()
     {
-        $data['main_content'] = 'signin_form';
-        $this->load->view('includes/template',$data);
+        if(!$this->verify_user())
+        {
+            redirect('sessions/signin');
+        }
+    }
+
+
+    public function output($view_name)
+    {
+        //$data=$this->retrieve();
+        //$data = 'signin_form';
+        $this->load->view('includes/header');
+        $this->load->view($view_name);
+
+        $this->load->view('includes/footer');
     }
 
 

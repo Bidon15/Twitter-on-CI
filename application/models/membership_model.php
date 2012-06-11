@@ -23,17 +23,20 @@ class Membership_model extends CI_Model{
         return FALSE;
     }
 
-    public function create_member()
+    public function create_member($activation_key)
     {
         $new_member_insert_data = array(
             'first_name'=>$this->input->post('first_name'),
             'last_name'=>$this->input->post('last_name'),
             'email_address'=>$this->input->post('email_address'),
             'username'=>$this->input->post('username'),
-            'password'=>md5($this->input->post('password'))
+            'password'=>md5($this->input->post('password')),
+            'activation_key'=>$activation_key
         );
 
         $insert = $this->db->insert('members',$new_member_insert_data);
         return $insert;
     }
+
+
 }
