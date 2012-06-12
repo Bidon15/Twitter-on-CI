@@ -87,7 +87,9 @@ class Sessions extends MY_Controller
 
     private function _sending_email($email, $activation_key)
     {
+
         $this->load->library('email');
+        $config['mailtype'] = 'html';
         $this->email->from('braveryandglory@gmail.com', 'Administration');
         $this->email->to($email);
         $this->email->subject('Activation message');
