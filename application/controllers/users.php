@@ -27,7 +27,18 @@ class Users extends MY_Controller{
         $this->load->model('membership_model');
         if($this->membership_model->activate_user($this->uri->segment(3)) !== FALSE )
         {
-            $this->output('users/edit',$this->membership_model->activate_user($this->uri->segment(3)));
+            $query = $this->membership_model->activate_user($this->uri->segment(3));
+            if($query->num_rows()>0)
+            {
+                $row = $query->row();
+
+                $data['username']=$row->username;
+                $data['email_address']=$row->email_address;
+                //$data['password']=$row->password;
+                $this->output('users/edit',$data);
+
+            }
+
         }
         else
         {
