@@ -34,13 +34,13 @@ class Sessions extends MY_Controller
             redirect('users/index');
         }
         else {
-            $this->output('sessions/signin_form');
+            $this->output('sessions/signin_form','');
         }
     }
 
     public function members_area()
     {
-        $this->output('sessions/members_area');
+        $this->output('sessions/members_area','');
     }
 
     //Under construction!
@@ -65,7 +65,7 @@ class Sessions extends MY_Controller
         $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[4]');
         $this->form_validation->set_rules('password2', 'Password Again', 'trim|required|matches[password]');
         if ($this->form_validation->run() == FALSE) {
-            $this->output('sessions/signup_form');
+            $this->output('sessions/signup_form','');
         }
 
         else {
@@ -73,12 +73,12 @@ class Sessions extends MY_Controller
             $activation_key = random_string('unique');
             if ($query = $this->membership_model->create_member($activation_key)) {
                 $this->_sending_email($this->input->post('email_address'), $activation_key);
-                $this->output('sessions/signup_successful');
+                $this->output('sessions/signup_successful','');
 
                 //return $activation_key;
             }
             else {
-                $this->output('sessions/signup_form');
+                $this->output('sessions/signup_form','');
             }
 
 
@@ -87,17 +87,17 @@ class Sessions extends MY_Controller
 
     private function _sending_email($email, $activation_key)
     {
-
         $this->load->library('email');
         $config['mailtype'] = 'html';
+        $this->email->initialize($config);
         $this->email->from('braveryandglory@gmail.com', 'Administration');
         $this->email->to($email);
         $this->email->subject('Activation message');
-        $this->email->message('Please click on the link to activate your account'.anchor('sessions/sending_email/'.$activation_key));
+        $this->email->message('Please click on the link to activate your account '.anchor('users/activation/'.$activation_key));
         $this->email->send();
-
-
     }
+
+
 
 }
 

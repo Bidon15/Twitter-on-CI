@@ -38,5 +38,23 @@ class Membership_model extends CI_Model{
         return $insert;
     }
 
+    public function activate_user($activation_key)
+    {
+        $this->db->where('activation_key',$activation_key);
+        $query = $this->db->get('members');
+        if($query->num_rows() == 1)
+        {
+            $this->db->where('activation_key',$activation_key);
+            $data = array('activation_key'=> NULL);
+            $this->db->update('members',$data);
+            return $this->db->get('members');
+        }
+        else
+            return FALSE;
+
+    }
+
+
+
 
 }
