@@ -25,26 +25,34 @@ class Users extends MY_Controller{
     public function activation()
     {
         $this->load->model('membership_model');
+        $this->session->set_userdata('user_id', $this->membership_model->validate());
         if($this->membership_model->activate_user($this->uri->segment(3)) !== FALSE )
         {
             $query = $this->membership_model->activate_user($this->uri->segment(3));
             if($query->num_rows()>0)
             {
-                $row = $query->row();
+                //$row = $query->row();
 
-                $data['username']=$row->username;
-                $data['email_address']=$row->email_address;
+                //$data['username']=$row->username;
+                //$data['email_address']=$row->email_address;
                 //$data['password']=$row->password;
-                $this->output('users/edit',$data);
+                redirect('users/edit');
 
             }
 
         }
         else
         {
-            $content = 'Your have an invalid activation key. Please contact our administration!';
-            $this->output('sessions/signin_form',$content);
+            //$content = 'Your have an invalid activation key. Please contact our administration!';
+            redirect('sessions/signin');
         }
+
+    }
+
+    //Tomorrow will be finished.
+    public function edit()
+    {
+        $this->session->userdata('user_id');
 
     }
 

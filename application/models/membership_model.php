@@ -47,7 +47,7 @@ class Membership_model extends CI_Model{
             $this->db->where('activation_key',$activation_key);
             $data = array('activation_key'=> NULL);
             $this->db->update('members',$data);
-            return $this->db->get('members');
+            return TRUE;
         }
         else
             return FALSE;
