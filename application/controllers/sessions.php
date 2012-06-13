@@ -19,6 +19,8 @@ class Sessions extends MY_Controller
     public function signin()
     {
         $this->load->model('membership_model');
+        $content = '';
+
 
 
         if ($this->membership_model->validate() !== FALSE) {
@@ -34,7 +36,7 @@ class Sessions extends MY_Controller
             redirect('users/index');
         }
         else {
-            $this->output('sessions/signin_form','');
+            $this->output('sessions/signin_form',$content);
         }
     }
 
@@ -43,14 +45,13 @@ class Sessions extends MY_Controller
         $this->output('sessions/members_area','');
     }
 
-    //Under construction!
-    /*public function signout()
+
+    public function signout()
     {
-        $this->load->model('membership_model');
         $this->session->sess_destroy();
         delete_cookie();
-        $this->output();
-    }*/
+        $this->output('sessions/signin_form','');
+    }
 
     public function signup()
     {

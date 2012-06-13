@@ -7,53 +7,70 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class Users extends MY_Controller{
+class Users extends MY_Controller
+{
 
     public function __construct()
     {
         parent::__construct();
         $this->check_permission();
+        $this->load->model('membership_model');
 
     }
+
     public function index()
     {
-        echo '123';
-        var_dump($this->input->cookie('user_id'));
+        $config['base_url']='http://localhost/twitter/index.php/users/index/';
+        $config['total_rows'] = 11;
+        $config['per_page'] = 5;
+        $config['uri_segment'] = 3;
+        $this->pagination->initialize($config);
+
+        $data['username'] = $this->membership_model->get_followers();
+        $data['id'] = $this->membership_model->get_followers();
+        $data['title'] = 'All users';
+        $this->output('users/index',$data);
+        echo $this->pagination->create_links();
 
     }
 
-    public function activation()
+    public function activation($activation_key)
     {
-        $this->load->model('membership_model');
-        $this->session->set_userdata('user_id', $this->membership_model->validate());
-        if($this->membership_model->activate_user($this->uri->segment(3)) !== FALSE )
-        {
-            $query = $this->membership_model->activate_user($this->uri->segment(3));
-            if($query->num_rows()>0)
-            {
-                //$row = $query->row();
 
-                //$data['username']=$row->username;
-                //$data['email_address']=$row->email_address;
-                //$data['password']=$row->password;
-                redirect('users/edit');
 
-            }
+        if ($this->membership_model->activate_user($activation_key)) {
+            $this->session->set_flashdata('activation','Your account has been activated. Please sign in and start trolling.');
+            redirect('sessions/signin');
+
+
 
         }
-        else
-        {
-            //$content = 'Your have an invalid activation key. Please contact our administration!';
+        else {
+            $this->session->set_flashdata('activation','You failed activating your account. Please contact our administration for further information.');
             redirect('sessions/signin');
         }
 
     }
 
     //Tomorrow will be finished.
-    public function edit()
+    public function show($id)
     {
-        $this->session->userdata('user_id');
+        $data['username'] = $this->membership_model->get_followers($id);
 
+        if (empty($data['username']))
+        {
+            show_404();
+        }
+
+        $this->output('users/show',$data);
+    }
+
+    public function test()
+    {
+        foreach ($this->membership_model->test() as $row)
+        {
+            echo $row->username;?><br/><?php
+        }
     }
 
 

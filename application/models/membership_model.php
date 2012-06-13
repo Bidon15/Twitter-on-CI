@@ -44,14 +44,41 @@ class Membership_model extends CI_Model{
         $query = $this->db->get('members');
         if($query->num_rows() == 1)
         {
-            $this->db->where('activation_key',$activation_key);
+            //$id_row = $query->row();
+            //$id_user = $id_row->id;
+            //$this->db->where('activation_key',$activation_key);
+            //$query = $this->db->get('members');
             $data = array('activation_key'=> NULL);
             $this->db->update('members',$data);
+            //$query = $this->db->get('members');
+            //if($query->num_rows() == 1)
+            //{
+
             return TRUE;
+            //}
         }
         else
             return FALSE;
 
+    }
+
+    public function  get_followers($id = NULL)
+    {
+        if($id == NULL){
+           $query = $this->db->get('members');
+            return $query->result_array();
+        }
+
+        $query = $this->db->get_where('members',array('id'=>$id));
+        return $query->row_array();
+    }
+
+    public function pagination ()
+    {
+        $this->db->limit(5,5);
+        $query = $this->db->get('members');
+
+        return $query->result();
     }
 
 

@@ -1,7 +1,7 @@
 <div id="login form" align="center">
     <h1>Sign In</h1>
     <?php
-
+    echo $this->session->flashdata('activation');
     echo form_open('sessions/signin');
     echo form_input('username', 'Username');
     echo form_password('password', 'Password');
