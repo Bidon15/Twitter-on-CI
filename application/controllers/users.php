@@ -57,6 +57,7 @@ class Users extends MY_Controller
 
     public function show($id)
     {
+
         $data['username'] = $this->membership_model->get_followers($id);
 
         if (empty($data['username']))

@@ -31,7 +31,8 @@ class Membership_model extends CI_Model{
             'email_address'=>$this->input->post('email_address'),
             'username'=>$this->input->post('username'),
             'password'=>md5($this->input->post('password')),
-            'activation_key'=>$activation_key
+            'activation_key'=>$activation_key,
+            'activated'=>0
         );
 
         $insert = $this->db->insert('members',$new_member_insert_data);
@@ -40,7 +41,7 @@ class Membership_model extends CI_Model{
 
     public function activate_user($activation_key)
     {
-        $this->db->where('activation_key',$activation_key);
+        $this->db->where('activation_key', $activation_key);
         $query = $this->db->get('members');
         if($query->num_rows() == 1)
         {
@@ -48,12 +49,14 @@ class Membership_model extends CI_Model{
             //$id_user = $id_row->id;
             //$this->db->where('activation_key',$activation_key);
             //$query = $this->db->get('members');
-            $data = array('activation_key'=> NULL);
-            $this->db->update('members',$data);
+            $data = array('activation_key'=> NULL,
+                          'activated' =>now());
+            $this->db->where('activation_key', $activation_key);
+            $this->db->update('members', $data);
+
             //$query = $this->db->get('members');
             //if($query->num_rows() == 1)
             //{
-
             return TRUE;
             //}
         }
