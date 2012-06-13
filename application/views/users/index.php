@@ -1,9 +1,12 @@
 <h2><?php echo $title ?></h2>
-<?php foreach ($username as $row): ?>
+<?php echo $links;
+      foreach($results as $data):?>
 
 <div id="main">
     <p>
 
-<?php echo anchor('users/show/'.$row['id'],$row['username']);?></p></div>
+<?php echo anchor('users/show/'.$data->id,$data->username);
+      echo "<br>";
+      ?></p></div>
 
-<?php endforeach ?>
+<?php endforeach;?>

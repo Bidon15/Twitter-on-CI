@@ -21,16 +21,18 @@ class Users extends MY_Controller
     public function index()
     {
         $config['base_url']='http://localhost/twitter/index.php/users/index/';
-        $config['total_rows'] = 11;
+        $config["total_rows"] = $this->membership_model->count_users();
         $config['per_page'] = 5;
         $config['uri_segment'] = 3;
         $this->pagination->initialize($config);
-
-        $data['username'] = $this->membership_model->get_followers();
-        $data['id'] = $this->membership_model->get_followers();
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $data["results"] = $this->membership_model->get_followers(NULL,$config["per_page"], $page);
+        $data["links"] = $this->pagination->create_links();
+        //$data['username'] = $this->membership_model->get_followers();
+        //$data['id'] = $this->membership_model->get_followers();
         $data['title'] = 'All users';
         $this->output('users/index',$data);
-        echo $this->pagination->create_links();
+        //echo $this->pagination->create_links();
 
     }
 
@@ -52,7 +54,7 @@ class Users extends MY_Controller
 
     }
 
-    //Tomorrow will be finished.
+
     public function show($id)
     {
         $data['username'] = $this->membership_model->get_followers($id);
@@ -65,13 +67,13 @@ class Users extends MY_Controller
         $this->output('users/show',$data);
     }
 
-    public function test()
+    /*public function test()
     {
         foreach ($this->membership_model->test() as $row)
         {
             echo $row->username;?><br/><?php
         }
-    }
+    }*/
 
 
 }

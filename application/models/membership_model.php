@@ -62,24 +62,32 @@ class Membership_model extends CI_Model{
 
     }
 
-    public function  get_followers($id = NULL)
+    public function  get_followers($id = NULL,$limit = NULL,$offset = NULL)
     {
         if($id == NULL){
-           $query = $this->db->get('members');
-            return $query->result_array();
+            $this->db->limit($limit, $offset);
+
+            $query = $this->db->get('members');
+
+            if ($query->num_rows() > 0) {
+
+                return $query->result();
+
+            }
+
         }
 
+        if($limit == NULL && $offset == NULL){
         $query = $this->db->get_where('members',array('id'=>$id));
         return $query->row_array();
+        }
     }
 
-    public function pagination ()
-    {
-        $this->db->limit(5,5);
-        $query = $this->db->get('members');
-
-        return $query->result();
+    public function count_users() {
+        return $this->db->count_all('members');
     }
+
+
 
 
 
