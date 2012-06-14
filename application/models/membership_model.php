@@ -112,7 +112,9 @@ class Membership_model extends CI_Model{
 
     }
 
-    public function get_images($id) {
+
+    //Under Construction
+    /*public function get_images($id) {
 
         $files = scandir($this->gallery_path);
         $files = array_diff($files, array('.', '..'));
@@ -125,9 +127,7 @@ class Membership_model extends CI_Model{
 
             );
         }
-
-        return $images;
-    }
+    }*/
 
 
 
