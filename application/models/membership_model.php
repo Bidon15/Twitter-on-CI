@@ -9,6 +9,16 @@
 
 class Membership_model extends CI_Model{
 
+    var $gallery_path;
+    var $gallery_path_url;
+    public function __construct()
+    {
+        parent::__construct();
+        $this->gallery_path = realpath(APPPATH.'../uploads');
+        $this->gallery_path_url = base_url().'uploads/';
+
+    }
+
     public function validate()
     {
         $this->db->where('username',$this->input->post('username'));
@@ -45,20 +55,11 @@ class Membership_model extends CI_Model{
         $query = $this->db->get('members');
         if($query->num_rows() == 1)
         {
-            //$id_row = $query->row();
-            //$id_user = $id_row->id;
-            //$this->db->where('activation_key',$activation_key);
-            //$query = $this->db->get('members');
             $data = array('activation_key'=> NULL,
                           'activated' =>now());
             $this->db->where('activation_key', $activation_key);
             $this->db->update('members', $data);
-
-            //$query = $this->db->get('members');
-            //if($query->num_rows() == 1)
-            //{
             return TRUE;
-            //}
         }
         else
             return FALSE;
@@ -69,15 +70,12 @@ class Membership_model extends CI_Model{
     {
         if($id == NULL){
             $this->db->limit($limit, $offset);
-
+            $this->db->order_by('activated', 'desc');
             $query = $this->db->get('members');
-
             if ($query->num_rows() > 0) {
 
                 return $query->result();
-
             }
-
         }
 
         if($limit == NULL && $offset == NULL){
@@ -88,6 +86,47 @@ class Membership_model extends CI_Model{
 
     public function count_users() {
         return $this->db->count_all('members');
+    }
+
+    public function do_upload($id)
+    {
+        $config = array(
+            'allowed_types' => 'jpg|png|bmp|jpeg',
+            'upload_path' => $this->gallery_path,
+            'file_name'=>$id
+        );
+        $image =
+        $this->upload->initialize($config);
+        $this->upload->do_upload();
+        $image_data=$this->upload->data();
+
+        $config = array(
+            'source_image'=>$image_data['full_path'],
+            'maintain_ratio'=>TRUE,
+            'width' => 60,
+            'height'=> 60
+
+        );
+        $this->image_lib->initialize($config);
+        $this->image_lib->resize();
+
+    }
+
+    public function get_images($id) {
+
+        $files = scandir($this->gallery_path);
+        $files = array_diff($files, array('.', '..'));
+
+        $images = array();
+
+        foreach ($files as $file) {
+            $images []= array (
+                'url' => $this->gallery_path_url . $file,
+
+            );
+        }
+
+        return $images;
     }
 
 

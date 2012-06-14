@@ -21,8 +21,6 @@ class Sessions extends MY_Controller
         $this->load->model('membership_model');
         $content = '';
 
-
-
         if ($this->membership_model->validate() !== FALSE) {
             $data = array(
                 'name' => 'user_id',
@@ -40,10 +38,10 @@ class Sessions extends MY_Controller
         }
     }
 
-    public function members_area()
+    /*public function members_area()
     {
         $this->output('sessions/members_area','');
-    }
+    }*/
 
 
     public function signout()
@@ -76,7 +74,6 @@ class Sessions extends MY_Controller
                 $this->_sending_email($this->input->post('email_address'), $activation_key);
                 $this->output('sessions/signup_successful','');
 
-                //return $activation_key;
             }
             else {
                 $this->output('sessions/signup_form','');
@@ -97,8 +94,6 @@ class Sessions extends MY_Controller
         $this->email->message('Please click on the link to activate your account '.anchor('users/activation/'.$activation_key));
         $this->email->send();
     }
-
-
 
 }
 

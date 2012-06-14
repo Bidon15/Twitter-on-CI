@@ -28,11 +28,8 @@ class Users extends MY_Controller
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
         $data["results"] = $this->membership_model->get_followers(NULL,$config["per_page"], $page);
         $data["links"] = $this->pagination->create_links();
-        //$data['username'] = $this->membership_model->get_followers();
-        //$data['id'] = $this->membership_model->get_followers();
         $data['title'] = 'All users';
         $this->output('users/index',$data);
-        //echo $this->pagination->create_links();
 
     }
 
@@ -43,8 +40,6 @@ class Users extends MY_Controller
         if ($this->membership_model->activate_user($activation_key)) {
             $this->session->set_flashdata('activation','Your account has been activated. Please sign in and start trolling.');
             redirect('sessions/signin');
-
-
 
         }
         else {
@@ -68,13 +63,21 @@ class Users extends MY_Controller
         $this->output('users/show',$data);
     }
 
-    /*public function test()
+    public function edit()
     {
-        foreach ($this->membership_model->test() as $row)
-        {
-            echo $row->username;?><br/><?php
+        if($this->input->post('upload')){
+            $this->membership_model->do_upload($this->session->userdata('user_id'));
         }
-    }*/
+        $data['username'] = $this->membership_model->get_followers($this->session->userdata('user_id'));
+        $data['email_address'] = $this->membership_model->get_followers($this->session->userdata('user_id'));
+        $data['images'] = $this->membership_model->get_images($this->session->userdata('user_id'));
+
+        //$this->load->view('gallery', $data);
+
+        $this->output('users/edit',$data);
+    }
+
+
 
 
 }
