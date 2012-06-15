@@ -2,7 +2,7 @@
 <div id="main">
 <p>
 
-<?php echo $username['username'];?></p></div>
+<?php echo $users['username'];?></p></div>
 
 
 

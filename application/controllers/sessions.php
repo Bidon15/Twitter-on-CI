@@ -72,7 +72,8 @@ class Sessions extends MY_Controller
             $activation_key = random_string('unique');
             if ($query = $this->membership_model->create_member($activation_key)) {
                 $this->_sending_email($this->input->post('email_address'), $activation_key);
-                $this->output('sessions/signup_successful','');
+                $this->session->set_flashdata('activation','Your account has been created. To start twitting please activate the link that has been sent to your mail');
+                redirect('sessions/signin');
 
             }
             else {

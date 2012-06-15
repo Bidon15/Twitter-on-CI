@@ -66,7 +66,7 @@ class Membership_model extends CI_Model{
 
     }
 
-    public function  get_followers($id = NULL,$limit = NULL,$offset = NULL)
+    public function  get_followers($id = NULL,$limit,$offset)
     {
         if($id == NULL){
             $this->db->limit($limit, $offset);
@@ -78,39 +78,59 @@ class Membership_model extends CI_Model{
             }
         }
 
-        if($limit == NULL && $offset == NULL){
-        $query = $this->db->get_where('members',array('id'=>$id));
-        return $query->row_array();
-        }
     }
 
     public function count_users() {
         return $this->db->count_all('members');
     }
 
-    public function do_upload($id)
-    {
-        $config = array(
-            'allowed_types' => 'jpg|png|bmp|jpeg',
-            'upload_path' => $this->gallery_path,
-            'file_name'=>$id
-        );
-        $image =
-        $this->upload->initialize($config);
-        $this->upload->do_upload();
-        $image_data=$this->upload->data();
+    public function do_upload($image_name)
+    {   $this->db->where('id',$this->session->userdata('user_id'));
+        $query = $this->db->get('members');
+        $image_row = $query->row();
+        if(($image_user = $image_row->image) == NULL)
+        {
+            $data = array('image'=>$image_name);
+            $this->db->where('id',$this->session->userdata('user_id'));
+            $this->db->update('members', $data);
+        }
+        else
+        {   $data = array('image'=>$image_name);
+            unlink('./uploads/'.$image_user);
+            $this->db->where('id',$this->session->userdata('user_id'));
+            $this->db->update('members', $data);
 
-        $config = array(
-            'source_image'=>$image_data['full_path'],
-            'maintain_ratio'=>TRUE,
-            'width' => 60,
-            'height'=> 60
-
-        );
-        $this->image_lib->initialize($config);
-        $this->image_lib->resize();
+        }
 
     }
+
+    public function update_user()
+    {
+
+        $this->db->where('password',md5($this->input->post('password')));
+        $this->db->where('id',$this->session->userdata('user_id'));
+        $query = $this->db->get('members');
+        if($query->num_rows() == 1)
+        {
+
+            $updated_data = array(
+                'email_address'=>$this->input->post('email_address'),
+                'password'=>md5($this->input->post('new_password'))
+            );
+            $this->db->where('id',$this->session->userdata('user_id'));
+            $this->db->update('members',$updated_data);
+        }
+        return FALSE;
+    }
+
+    public function get_users($id)
+    {
+        $query = $this->db->get_where('members',array('id'=>$id));
+        return $query->row_array();
+    }
+
+
+
 
 
     //Under Construction
