@@ -32,7 +32,7 @@
 
     }
     foreach ($user_message as $k => $v){
-         echo $v['username'].'&nbsp;&nbsp;Wrote:&nbsp;&nbsp;&nbsp;&nbsp;'; echo $v['message'];?>&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+         echo $v['username'].'&nbsp;&nbsp;Wrote:&nbsp;&nbsp;&nbsp;&nbsp;'; echo $v['message'];?>&nbsp;&nbsp;&nbsp;&nbsp;<br/><br/>
         <?php $post_date = $v['created'];
         $now = time();
         echo timespan($post_date, $now);?><br/><?php
