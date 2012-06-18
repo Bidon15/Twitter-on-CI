@@ -15,6 +15,7 @@ class Users extends MY_Controller
         parent::__construct();
         $this->check_permission();
         $this->load->model('membership_model');
+        $this->load->model('message_model');
 
     }
 
@@ -53,6 +54,7 @@ class Users extends MY_Controller
 
         $data['users'] = $this->membership_model->get_users($id);
         $data['if_followed']=$this->membership_model->if_followed($id);
+        $data['user_message'] = $this->message_model->get_messages($id);
         if (empty($data['users']))
         {
             show_404();

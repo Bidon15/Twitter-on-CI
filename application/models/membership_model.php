@@ -129,7 +129,7 @@ class Membership_model extends CI_Model{
         return $query->row_array();
     }
 
-    public function follow()
+   /* public function follow()
     {
          $followed = array(
               'user_from_id'=>$this->session->userdata('user_id'),
@@ -147,7 +147,7 @@ class Membership_model extends CI_Model{
         );
         $this->db->delete('relationships',$unfollow);
 
-    }
+    }*/
 
     public function if_followed($user_to_id)
     {
