@@ -21,6 +21,7 @@ class Sessions extends MY_Controller
         $this->load->model('membership_model');
         $content = '';
 
+        // @todo проверить на TRUE (избавишься от else)
         if ($this->membership_model->validate() !== FALSE) {
             $data = array(
                 'name' => 'user_id',
@@ -34,6 +35,7 @@ class Sessions extends MY_Controller
             redirect('users/index');
         }
         else {
+            // @todo вынести за пределы else конструкции (output должен всегда выводиться)
             $this->output('sessions/signin_form',$content);
         }
     }
@@ -48,6 +50,7 @@ class Sessions extends MY_Controller
     {
         $this->session->sess_destroy();
         delete_cookie();
+        // @todo делать редирект на sign in page
         $this->output('sessions/signin_form','');
     }
 
@@ -69,14 +72,17 @@ class Sessions extends MY_Controller
 
         else {
             $this->load->model('membership_model');
+
             $activation_key = random_string('unique');
             if ($query = $this->membership_model->create_member($activation_key)) {
+                // @todo _sending_email => _send_email
                 $this->_sending_email($this->input->post('email_address'), $activation_key);
                 $this->session->set_flashdata('activation','Your account has been created. To start twitting please activate the link that has been sent to your mail');
                 redirect('sessions/signin');
 
             }
             else {
+                // @todo вынести за пределы else конструкции
                 $this->output('sessions/signup_form','');
             }
 

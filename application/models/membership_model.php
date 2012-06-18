@@ -69,6 +69,8 @@ class Membership_model extends CI_Model{
     public function  get_followers($id = NULL,$limit,$offset)
     {
         if($id == NULL){
+            // @todo по желанию: маленькие запросы можно записывать в одну строку
+            // $this->db->limit($limit, $offset)->order_by('activated', 'desc')->get('members');
             $this->db->limit($limit, $offset);
             $this->db->order_by('activated', 'desc');
             $query = $this->db->get('members');
@@ -88,6 +90,7 @@ class Membership_model extends CI_Model{
     {   $this->db->where('id',$this->session->userdata('user_id'));
         $query = $this->db->get('members');
         $image_row = $query->row();
+        // @todo убрать повторяющиеся действия
         if(($image_user = $image_row->image) == NULL)
         {
             $data = array('image'=>$image_name);

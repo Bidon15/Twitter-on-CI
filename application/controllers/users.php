@@ -70,10 +70,13 @@ class Users extends MY_Controller
             $this->form_validation->set_rules('email_address', 'Email Address', 'trim|required|valid_email|is_unique[members.email_address]');
             $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|min_length[4]');
             $this->form_validation->set_rules('new_password2', 'New Password Again', 'trim|required|matches[new_password]');
+
+            // @todo form validator проверить на true
             if ($this->form_validation->run() == FALSE) {
                 $this->output('users/edit','');
             }
             else {
+                // @todo сделать редирект после успешного сохранения (по желанию: flashdata)
                 $this->membership_model->update_user();
 
             }
@@ -82,6 +85,7 @@ class Users extends MY_Controller
 
             if (!empty($_FILES['image']['tmp_name']))
             {
+                // @todo добавить возможность загрузки разных форматов (png, gif, jpeg)
                 $image_name = random_string('unique').'.jpg';
                 move_uploaded_file($_FILES['image']['tmp_name'], $this->config->item('path_users_images') . $image_name);
                 $config = array(
@@ -93,6 +97,7 @@ class Users extends MY_Controller
                 $this->image_lib->initialize($config);
                 $this->image_lib->resize();
                 $this->membership_model->do_upload($image_name);
+                // @todo сделать редирект (по желанию: flashdata)
             }
         }
         $data['users'] = $this->membership_model->get_users($this->session->userdata('user_id'));
