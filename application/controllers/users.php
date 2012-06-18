@@ -52,12 +52,11 @@ class Users extends MY_Controller
     {
 
         $data['users'] = $this->membership_model->get_users($id);
-
+        $data['if_followed']=$this->membership_model->if_followed($id);
         if (empty($data['users']))
         {
             show_404();
         }
-
         $this->output('users/show',$data);
     }
 
@@ -99,6 +98,7 @@ class Users extends MY_Controller
         $this->output('users/edit',$data);
 
     }
+
 
 
 

@@ -1,4 +1,4 @@
-<h2><?php echo $title ?></h2>
+<h2><?php echo $title;?></h2><?php echo anchor('users/edit','Edit my Profile');?><br/>
 <?php echo $links;
       foreach($results as $user):?>
 
