@@ -129,38 +129,26 @@ class Membership_model extends CI_Model{
         return $query->row_array();
     }
 
-   /* public function follow()
-    {
-         $followed = array(
-              'user_from_id'=>$this->session->userdata('user_id'),
-              'user_to_id'=>$this->input->post('user_to_id')
-         );
-         $this->db->insert('relationships',$followed);
 
-    }
 
-    public function unfollow()
-    {
-        $unfollow = array(
-            'user_from_id'=>$this->session->userdata('user_id'),
-            'user_to_id'=>$this->input->post('user_to_id')
-        );
-        $this->db->delete('relationships',$unfollow);
 
+
+    //Under Construction
+    /*public function get_images($id) {
+
+        $files = scandir($this->gallery_path);
+        $files = array_diff($files, array('.', '..'));
+
+        $images = array();
+
+        foreach ($files as $file) {
+            $images []= array (
+                'url' => $this->gallery_path_url . $file,
+
+            );
+        }
     }*/
 
-    public function if_followed($user_to_id)
-    {
-        $this->db->where('user_from_id',$this->session->userdata('user_id'));
-        $this->db->where('user_to_id',$user_to_id);
-        $query = $this->db->get('relationships');
-        if($query->num_rows == 1)
-            return TRUE;
-        else{
-            return FALSE;
-        }
-
-    }
 
 
 

@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+// @todo удалить этот контроллер
 class Welcome extends CI_Controller {
 
 	/**
