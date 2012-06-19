@@ -34,10 +34,7 @@ class Sessions extends MY_Controller
                 $this->input->set_cookie($data);
             redirect('users/index');
         }
-        else {
-            // @todo вынести за пределы else конструкции (output должен всегда выводиться)
-            $this->output('sessions/signin_form',$content);
-        }
+        $this->output('sessions/signin_form',$content);
     }
 
     /*public function members_area()
@@ -50,8 +47,7 @@ class Sessions extends MY_Controller
     {
         $this->session->sess_destroy();
         delete_cookie();
-        // @todo делать редирект на sign in page
-        $this->output('sessions/signin_form','');
+        redirect('sessions/signin');
     }
 
     public function signup()
@@ -75,22 +71,18 @@ class Sessions extends MY_Controller
 
             $activation_key = random_string('unique');
             if ($query = $this->membership_model->create_member($activation_key)) {
-                // @todo _sending_email => _send_email
-                $this->_sending_email($this->input->post('email_address'), $activation_key);
+                $this->_send_email($this->input->post('email_address'), $activation_key);
                 $this->session->set_flashdata('activation','Your account has been created. To start twitting please activate the link that has been sent to your mail');
                 redirect('sessions/signin');
 
             }
-            else {
-                // @todo вынести за пределы else конструкции
-                $this->output('sessions/signup_form','');
-            }
 
+                $this->output('sessions/signup_form','');
 
         }
     }
 
-    private function _sending_email($email, $activation_key)
+    private function _send_email($email, $activation_key)
     {
         $this->load->library('email');
         $config['mailtype'] = 'html';

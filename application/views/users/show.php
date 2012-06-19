@@ -1,10 +1,10 @@
-
 <div id="main">
 <p>
-<?php //print_r($user_message);exit;?>
+<?php //echo'<pre>'; print_r($users); echo '</pre>'; exit;?>
 <?php echo $users['username'];?><br/>
     <?php if($users['image'] == NULL) {?> <img src="http://www.gravatar.com/avatar/<?php echo md5( strtolower( trim( $users['email_address'] )));?>" />
     <?php } else echo img($this->config->item('url_users_images') . $users['image']); ?></p>
+<?php echo anchor('users/following','Following:  '.$count_followers)  ?>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo anchor('users/followers','Followers:  '.$count_followings)?><br/>
 <?php
     if($users['id'] == $this->session->userdata('user_id'))
     {
@@ -29,15 +29,21 @@
             echo form_submit('follow','Follow');
             echo form_close();
         }
-
     }
+    echo form_open('messages/delete');
     foreach ($user_message as $k => $v){
-         echo $v['username'].'&nbsp;&nbsp;Wrote:&nbsp;&nbsp;&nbsp;&nbsp;'; echo $v['message'];?>&nbsp;&nbsp;&nbsp;&nbsp;<br/><br/>
-        <?php $post_date = $v['created'];
+        echo $v['username'].'&nbsp;&nbsp;Wrote:&nbsp;&nbsp;&nbsp;&nbsp;'; echo $v['message'];?>&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+        <?php
+        if($v['id'] == $this->session->userdata('user_id'))
+        {
+            form_hidden('message_id',$v['id']);
+            echo form_submit('delete','Delete post');
+        }
+        $post_date = $v['created'];
         $now = time();
-        echo timespan($post_date, $now);?><br/><?php
+        echo timespan($post_date, $now);?><br/><br/><?php
     }
-
+    echo form_close();
 
     echo anchor('users/index','Go to all users');
 

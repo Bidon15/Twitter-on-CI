@@ -25,5 +25,14 @@ class Messages extends MY_Controller {
 
     }
 
+    public function delete()
+    {
+        if($this->input->post('delete'))
+        {
+            $this->message_model->delete();
+        }
+        redirect('users/show/'.$this->session->userdata('user_id'));
+    }
+
 
 }

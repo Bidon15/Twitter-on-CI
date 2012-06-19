@@ -66,19 +66,66 @@ class Membership_model extends CI_Model{
 
     }
 
-    public function  get_followers($id = NULL,$limit,$offset)
+    public function  get_followers($id = NULL,$is_count,$limit,$offset)
     {
         if($id == NULL){
             $this->db->limit($limit, $offset);
             $this->db->order_by('activated', 'desc');
             $query = $this->db->get('members');
-            if ($query->num_rows() > 0) {
-
-                return $query->result();
+            if ($query->num_rows() > 0)
+            {
+                return $query->result_array();
             }
+        }
+        else
+        {
+            if($is_count==NULL)
+            {
+                $this->db->select('members.id, members.username');
+                $this->db->from('members');
+                $this->db->join('relationships', 'members.id=relationships.user_to_id', 'left');
+                $this->db->where('members.id', $id);
+                $query = $this->db->get();
+
+                return $query->num_rows();
+            }
+
         }
 
     }
+
+    public function  get_followings($id = NULL,$is_count,$limit,$offset)
+    {
+        if($id == NULL){
+            $this->db->limit($limit, $offset);
+            $this->db->order_by('activated', 'desc');
+            $query = $this->db->get('members');
+            if ($query->num_rows() > 0)
+            {
+                return $query->result_array();
+            }
+        }
+        else
+        {
+            if($is_count==NULL)
+            {
+                $this->db->select('user_from_id')
+                    ->from('relationships')
+                    ->where('user_to_id', $this->session->userdata('user_id'));
+                $chosen_id = $this->db->get();
+                foreach ($chosen_id->result_array() as $v)
+                        $followed_id[] = $v['user_from_id'];
+                $this->db->select('members.username,members.id')->from('members')
+                    ->join('relationships', 'members.id = relationships.user_from_id')->or_where('members.id', $followed_id);
+                $query = $this->db->get();
+
+                return $query->num_rows();
+            }
+
+        }
+
+    }
+
 
     public function count_users() {
         return $this->db->count_all('members');
@@ -129,29 +176,34 @@ class Membership_model extends CI_Model{
         return $query->row_array();
     }
 
-
-
-
-
-    //Under Construction
-    /*public function get_images($id) {
-
-        $files = scandir($this->gallery_path);
-        $files = array_diff($files, array('.', '..'));
-
-        $images = array();
-
-        foreach ($files as $file) {
-            $images []= array (
-                'url' => $this->gallery_path_url . $file,
-
-            );
+    public function if_followed($id)
+    {
+        $array =array('user_from_id'=>$this->session->userdata('user_id'),'user_to_id'=>$id);
+        $this->db->where($array);
+        $query = $this->db->get('relationships');
+        if($query->num_rows() == 1)
+        {
+            return TRUE;
         }
-    }*/
+        else
+        {
+            return FALSE;
+        }
 
+    }
 
+    public function follow()
+    {
+        $new_relationship = array(
+            'user_from_id'=>$this->session->userdata('user_id'),
+            'user_to_id'=>$this->input->post('user_to_id')
+        );
+        $this->db->insert('relationships',$new_relationship);
+    }
 
-
-
-
+    public function unfollow()
+    {
+        $this->db->where('user_from_id',$this->session->userdata('user_id'));
+        $this->db->delete('relationships');
+    }
 }
