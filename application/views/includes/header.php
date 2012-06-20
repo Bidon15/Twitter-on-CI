@@ -8,11 +8,11 @@
 <div class="navbar">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="sessions/signin">Twitter on CI</a>
+            <a class="brand" style="padding-left: 200px; color: #f5f5f5;" href="sessions/signin">Twitter on CI</a>
             <div class="nav-collapse">
                 <ul class="nav pull-right">
                     <li>
-                        <?php echo anchor('users/index','Home')?>
+                        <span style="padding-right: 200px;" class="brand"><?php echo anchor('users/index','Home')?></span>
                     </li>
                     <li>
                         <?php echo anchor('sessions/help','Help')?>
