@@ -5,6 +5,13 @@
 
 </head>
 <body>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="sessions/signin">Twitter on CI</a>
+        </div>
+    </div>
+</div>
 <?php //echo anchor('sessions/signout','Sign Out')?>
 
 

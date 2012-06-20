@@ -1,5 +1,5 @@
 
-    <h1 align="center">Sign In</h1>
+    <h1 align="center" style="font-family: Verdana, Arial, Helvetica, sans-serif;">Sign In</h1>
     <?php
     echo $this->session->flashdata('activation');
     $attributes=array('class'=>'well');
@@ -11,8 +11,8 @@
     <?php echo form_input('username');?><br/>
     <span class="label label-important">Password</span>
     <?php echo form_password('password');?><br/>
-    <?php echo 'Remember Me!  '.form_checkbox('cookie', 'remember', TRUE);?><br/>
-    <?php echo form_submit($submit);?><br/>
-    <?php echo anchor('sessions/signup', 'Create Account');?>
+    <?php echo 'Remember Me!  '.form_checkbox('cookie', 'remember', TRUE);?><br/><br/>
+    <?php echo form_submit($submit);?><br/><br/><br/>
+    <?php echo anchor('sessions/signup', 'Wanna be famous? Create an account!');?>
     </div>
 
