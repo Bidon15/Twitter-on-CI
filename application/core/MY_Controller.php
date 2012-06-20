@@ -12,20 +12,21 @@ class MY_Controller extends CI_Controller{
     public function verify_user(){
 
 
-        if(!$this->session->userdata('username'))
+        if($this->session->userdata('user_id')==NULL)
         {
+
             $cookie=$this->input->cookie('user_id');
-            if(isset($cookie))
+
+            if($cookie)
             {
                 $this->session->set_userdata(array('user_id' => $cookie));
                 return TRUE;
             }
             else
             {
+
             return FALSE;
             }
-
-
         }
         else
         {

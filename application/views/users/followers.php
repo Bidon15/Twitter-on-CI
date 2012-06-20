@@ -5,7 +5,7 @@
     <?php } else echo img($this->config->item('url_users_images') . $user['image']); ?></p>
     <?php echo anchor('users/following/' . $user['id'] . '/' . $count_followings, 'Following:  ' . $count_followings)  ?>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <?php echo anchor('users/followers/' . $count_followers, 'Followers:  ' . $count_followers)?><!--<br/>-->
+    <?php echo anchor('users/followers/' . $user['id'] . '/' . $count_followers, 'Followers:  ' . $count_followers)?><!--<br/>-->
 
 </div>
 

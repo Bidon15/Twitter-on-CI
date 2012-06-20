@@ -115,21 +115,18 @@ class Users extends MY_Controller
         $data['results'] = $this->membership_model->get_followings($id,$count_followings);
         $data['user']=$this->membership_model->get_users($id);
         $data['count_followings'] = $this->membership_model->get_followings($id,NULL);
-        $data['count_followers'] = $this->membership_model->get_followers($id, NULL);
+        $data['count_followers'] = $this->membership_model->get_followers($id, NULL,NULL,NULL);
         $data['title'] = 'Following';
         $this->output('users/following', $data);
     }
 
     public function followers($id,$count_followers)
     {
-
-
-        $data['results'] = $this->membership_model->get_followings($id,$count_followers,NULL,NULL);
-
+        $data['results'] = $this->membership_model->get_followers($id,$count_followers,NULL,NULL);
         $data['user']=$this->membership_model->get_users($id);
         $data['count_followings'] = $this->membership_model->get_followings($id,NULL, NULL, NULL);
-        //$data['count_followers'] = $this->membership_model->get_followers($id, FALSE, NULL, NULL);
-        $data['title'] = 'Following';
+        $data['count_followers'] = $this->membership_model->get_followers($id, FALSE, NULL, NULL);
+        $data['title'] = 'Followers';
         $this->output('users/followers', $data);
     }
 

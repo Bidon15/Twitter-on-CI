@@ -7,25 +7,21 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class Membership_model extends CI_Model{
+class Membership_model extends CI_Model
+{
 
-    var $gallery_path;
-    var $gallery_path_url;
     public function __construct()
     {
         parent::__construct();
-        $this->gallery_path = realpath(APPPATH.'../uploads');
-        $this->gallery_path_url = base_url().'uploads/';
 
     }
 
     public function validate()
     {
-        $this->db->where('username',$this->input->post('username'));
-        $this->db->where('password',md5($this->input->post('password')));
+        $this->db->where('username', $this->input->post('username'));
+        $this->db->where('password', md5($this->input->post('password')));
         $query = $this->db->get('members');
-        if($query->num_rows() == 1)
-        {
+        if ($query->num_rows() == 1) {
             $id_row = $query->row();
             $id_user = $id_row->id;
             return $id_user;
@@ -36,16 +32,16 @@ class Membership_model extends CI_Model{
     public function create_member($activation_key)
     {
         $new_member_insert_data = array(
-            'first_name'=>$this->input->post('first_name'),
-            'last_name'=>$this->input->post('last_name'),
-            'email_address'=>$this->input->post('email_address'),
-            'username'=>$this->input->post('username'),
-            'password'=>md5($this->input->post('password')),
-            'activation_key'=>$activation_key,
-            'activated'=>0
+            'first_name' => $this->input->post('first_name'),
+            'last_name' => $this->input->post('last_name'),
+            'email_address' => $this->input->post('email_address'),
+            'username' => $this->input->post('username'),
+            'password' => md5($this->input->post('password')),
+            'activation_key' => $activation_key,
+            'activated' => 0
         );
 
-        $insert = $this->db->insert('members',$new_member_insert_data);
+        $insert = $this->db->insert('members', $new_member_insert_data);
         return $insert;
     }
 
@@ -53,10 +49,9 @@ class Membership_model extends CI_Model{
     {
         $this->db->where('activation_key', $activation_key);
         $query = $this->db->get('members');
-        if($query->num_rows() == 1)
-        {
-            $data = array('activation_key'=> NULL,
-                          'activated' =>now());
+        if ($query->num_rows() == 1) {
+            $data = array('activation_key' => NULL,
+                'activated' => now());
             $this->db->where('activation_key', $activation_key);
             $this->db->update('members', $data);
             return TRUE;
@@ -66,98 +61,67 @@ class Membership_model extends CI_Model{
 
     }
 
-    public function  get_followings($id,$is_count=NULL)
+    public function  get_followings($id, $is_count = NULL)
     {
-//        print_r($is_count);
-//        exit;
-//        $this->db->select('members.id, members.username,members.activated');
-//        $this->db->from('members');
-//        $this->db->join('relationships', 'members.id=relationships.user_from_id', 'left');
-//        $this->db->where('relationships.user_from_id', $id);
-//        $this->db->limit($limit, $offset);
-//        $this->db->order_by('activated', 'desc');
-//        $query = $this->db->get();
-        if($is_count != NULL )
-        {
-            //$this->db->limit($limit, $offset);
-            $this->db->select('members.username, members.id, members.email_address,members.image')->from('members')
-                ->join('relationships', 'members.id = relationships.user_to_id')
-                ->where('relationships.user_from_id',$id);
-            $query = $this->db->get();
-
-                return $query->result_array();
+        $this->db->select('members.username, members.id, members.email_address,members.image')->from('members')
+            ->join('relationships', 'members.id = relationships.user_to_id')
+            ->where('relationships.user_from_id', $id);
+        $query = $this->db->get();
+        if ($is_count != NULL) {
+            return $query->result_array();
         }
-        else
-        {
-            $this->db->select('members.username,members.id')->from('members')
-                ->join('relationships', 'members.id = relationships.user_to_id')
-                ->where('relationships.user_from_id',$id);
-            $query = $this->db->get();
-
-
-                return $query->num_rows();
+        else {
+            return $query->num_rows();
         }
 
     }
 
 
-
-    public function  get_followers($id = NULL,$is_count=NULL,$limit,$offset)
+    public function  get_followers($id = NULL, $is_count = NULL, $limit, $offset)
     {
-        if($id == NULL)
-        {
+        if ($id == NULL) {
             $this->db->limit($limit, $offset);
             $this->db->order_by('activated', 'desc');
             $query = $this->db->get('members');
-            if ($query->num_rows() > 0)
-            {
+            if ($query->num_rows() > 0) {
                 return $query->result_array();
             }
         }
-        else
-        {
+        else {
             $this->db->select('members.username,members.id')->from('members')
                 ->join('relationships', 'members.id = relationships.user_to_id')
-                ->where_in('members.id',$id);
+                ->where_in('members.id', $id);
             $query = $this->db->get();
-            if($is_count==NULL)
-            {
-
-//                $this->db->select('members.username,members.id')->from('members')
-//                    ->join('relationships', 'members.id = relationships.user_to_id')
-//                    ->where_in('members.id',$id);
-//                $query = $this->db->get();
+            if ($is_count == NULL) {
                 return $query->num_rows();
             }
-            else
-            {
+            else {
                 return $query->result_array();
             }
-
-
         }
 
     }
 
 
-    public function count_users() {
+    public function count_users()
+    {
         return $this->db->count_all('members');
     }
 
     public function do_upload($image_name)
-    {   $this->db->where('id',$this->session->userdata('user_id'));
+    {
+        $this->db->where('id', $this->session->userdata('user_id'));
         $query = $this->db->get('members');
         $image_row = $query->row();
-        if(($image_user = $image_row->image) == NULL)
-        {
-            $data = array('image'=>$image_name);
-            $this->db->where('id',$this->session->userdata('user_id'));
+        if (($image_user = $image_row->image) == NULL) {
+            $data = array('image' => $image_name);
+            $this->db->where('id', $this->session->userdata('user_id'));
             $this->db->update('members', $data);
         }
-        else
-        {   $data = array('image'=>$image_name);
-            unlink('./uploads/'.$image_user);
-            $this->db->where('id',$this->session->userdata('user_id'));
+        else {
+            $data = array('image' => $image_name);
+            unlink('./uploads/' . $image_user);
+            $this->db->where('id', $this->session->userdata('user_id'));
             $this->db->update('members', $data);
 
         }
@@ -167,39 +131,36 @@ class Membership_model extends CI_Model{
     public function update_user()
     {
 
-        $this->db->where('password',md5($this->input->post('password')));
-        $this->db->where('id',$this->session->userdata('user_id'));
+        $this->db->where('password', md5($this->input->post('password')));
+        $this->db->where('id', $this->session->userdata('user_id'));
         $query = $this->db->get('members');
-        if($query->num_rows() == 1)
-        {
+        if ($query->num_rows() == 1) {
 
             $updated_data = array(
-                'email_address'=>$this->input->post('email_address'),
-                'password'=>md5($this->input->post('new_password'))
+                'email_address' => $this->input->post('email_address'),
+                'password' => md5($this->input->post('new_password'))
             );
-            $this->db->where('id',$this->session->userdata('user_id'));
-            $this->db->update('members',$updated_data);
+            $this->db->where('id', $this->session->userdata('user_id'));
+            $this->db->update('members', $updated_data);
         }
         return FALSE;
     }
 
     public function get_users($id)
     {
-        $query = $this->db->get_where('members',array('id'=>$id));
+        $query = $this->db->get_where('members', array('id' => $id));
         return $query->row_array();
     }
 
     public function if_followed($id)
     {
-        $array =array('user_from_id'=>$this->session->userdata('user_id'),'user_to_id'=>$id);
+        $array = array('user_from_id' => $this->session->userdata('user_id'), 'user_to_id' => $id);
         $this->db->where($array);
         $query = $this->db->get('relationships');
-        if($query->num_rows() == 1)
-        {
+        if ($query->num_rows() == 1) {
             return TRUE;
         }
-        else
-        {
+        else {
             return FALSE;
         }
 
@@ -208,15 +169,15 @@ class Membership_model extends CI_Model{
     public function follow()
     {
         $new_relationship = array(
-            'user_from_id'=>$this->session->userdata('user_id'),
-            'user_to_id'=>$this->input->post('user_to_id')
+            'user_from_id' => $this->session->userdata('user_id'),
+            'user_to_id' => $this->input->post('user_to_id')
         );
-        $this->db->insert('relationships',$new_relationship);
+        $this->db->insert('relationships', $new_relationship);
     }
 
     public function unfollow()
     {
-        $this->db->where('user_from_id',$this->session->userdata('user_id'));
+        $this->db->where('user_from_id', $this->session->userdata('user_id'));
         $this->db->delete('relationships');
     }
 }

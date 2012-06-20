@@ -18,35 +18,35 @@ class Sessions extends MY_Controller
 
     public function signin()
     {
-        $this->load->model('membership_model');
-        $content = '';
+        if($this->session->userdata('user_id') == NULL)
+        {
+            $this->load->model('membership_model');
+            if ($this->membership_model->validate() !== FALSE) {
+                $data = array(
+                    'name' => 'user_id',
+                    'value' => $query = $this->membership_model->validate(),
+                    'expire' => 2629748
+                );
 
-        // @todo проверить на TRUE (избавишься от else)
-        if ($this->membership_model->validate() !== FALSE) {
-            $data = array(
-                'name' => 'user_id',
-                'value' => $query = $this->membership_model->validate(),
-                'expire' => 2629748
-            );
-
-            $this->session->set_userdata('user_id', $this->membership_model->validate());
-            if ($this->input->post('cookie'))
-                $this->input->set_cookie($data);
+                $this->session->set_userdata('user_id', $this->membership_model->validate());
+                if ($this->input->post('cookie'))
+                    $this->input->set_cookie($data);
+                redirect('users/index');
+            }
+            $this->output('sessions/signin_form','');
+        }
+        else{
             redirect('users/index');
         }
-        $this->output('sessions/signin_form',$content);
+
+
+
     }
-
-    /*public function members_area()
-    {
-        $this->output('sessions/members_area','');
-    }*/
-
 
     public function signout()
     {
         $this->session->sess_destroy();
-        delete_cookie();
+        delete_cookie('user_id');
         redirect('sessions/signin');
     }
 

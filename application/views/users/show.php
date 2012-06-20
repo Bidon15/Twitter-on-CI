@@ -32,19 +32,22 @@
     }
     echo form_open('messages/delete');
     foreach ($user_message as $k => $v) {
-        echo $v['username'] . '&nbsp;&nbsp;Wrote:&nbsp;&nbsp;&nbsp;&nbsp;';
-        echo $v['message'];?>&nbsp;&nbsp;&nbsp;&nbsp;<br/>
-        <?php
-        if ($v['id'] == $this->session->userdata('user_id')) {
-            form_hidden('message_id', $v['id']);
-            echo form_submit('delete', 'Delete post');
+
+        if(isset($v['message']))
+        {
+            echo $v['username'] . '&nbsp;&nbsp;Wrote:&nbsp;&nbsp;&nbsp;&nbsp;';
+            echo $v['message'];?>&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+            <?php
+            if ($v['id'] == $this->session->userdata('user_id')) {
+                form_hidden('message_id', $v['id']);
+                echo form_submit('delete', 'Delete post');
+            }
+            $post_date = $v['created'];
+            $now = time();
+            echo timespan($post_date, $now);?><br/><br/><?php
         }
-        $post_date = $v['created'];
-        $now = time();
-        echo timespan($post_date, $now);?><br/><br/><?php
     }
     echo form_close();
-
     echo anchor('users/index', 'Go to all users');
 
     ?>

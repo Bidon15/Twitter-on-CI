@@ -40,13 +40,9 @@ class Message_model extends CI_Model
 
         }
         else {
-           // echo "<pre>";
+            echo "<pre>";
             $this->db->select('user_to_id')->from('relationships')->where('user_from_id', $this->session->userdata('user_id'));
             $chosen_id = $this->db->get();
-//            echo "<pre>";
-//            print_r ($chosen_id->result_array());
-//            echo "</pre>";
-//            exit;
             if($chosen_id->num_rows() > 0)
             {
                 foreach ($chosen_id->result_array() as $v) {
@@ -67,6 +63,7 @@ class Message_model extends CI_Model
                 $query = $this->db->get();
 
             }
+            return $query->result_array();
 
 
 
@@ -106,7 +103,7 @@ class Message_model extends CI_Model
 //                    }
 //                }
 //            }
-            return $query->result_array();
+
         }
 
     }
