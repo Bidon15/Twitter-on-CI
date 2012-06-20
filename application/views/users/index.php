@@ -1,5 +1,8 @@
 <h2><?php echo $title;?></h2><?php echo anchor('users/edit','Edit my Profile');?><br/>
 <?php echo $links;
+//echo "<pre>";
+//print_r ($results);
+//echo "</pre>";
       foreach($results as $user):?>
 
 <div id="main">

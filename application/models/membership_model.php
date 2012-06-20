@@ -66,37 +66,46 @@ class Membership_model extends CI_Model{
 
     }
 
-    public function  get_followers($id = NULL,$is_count,$limit,$offset)
+    public function  get_followings($id,$is_count=NULL)
     {
-        if($id == NULL){
-            $this->db->limit($limit, $offset);
-            $this->db->order_by('activated', 'desc');
-            $query = $this->db->get('members');
-            if ($query->num_rows() > 0)
-            {
+//        print_r($is_count);
+//        exit;
+//        $this->db->select('members.id, members.username,members.activated');
+//        $this->db->from('members');
+//        $this->db->join('relationships', 'members.id=relationships.user_from_id', 'left');
+//        $this->db->where('relationships.user_from_id', $id);
+//        $this->db->limit($limit, $offset);
+//        $this->db->order_by('activated', 'desc');
+//        $query = $this->db->get();
+        if($is_count != NULL )
+        {
+            //$this->db->limit($limit, $offset);
+            $this->db->select('members.username, members.id, members.email_address,members.image')->from('members')
+                ->join('relationships', 'members.id = relationships.user_to_id')
+                ->where('relationships.user_from_id',$id);
+            $query = $this->db->get();
+
                 return $query->result_array();
-            }
         }
         else
         {
-            if($is_count==NULL)
-            {
-                $this->db->select('members.id, members.username');
-                $this->db->from('members');
-                $this->db->join('relationships', 'members.id=relationships.user_to_id', 'left');
-                $this->db->where('members.id', $id);
-                $query = $this->db->get();
+            $this->db->select('members.username,members.id')->from('members')
+                ->join('relationships', 'members.id = relationships.user_to_id')
+                ->where('relationships.user_from_id',$id);
+            $query = $this->db->get();
+
 
                 return $query->num_rows();
-            }
-
         }
 
     }
 
-    public function  get_followings($id = NULL,$is_count,$limit,$offset)
+
+
+    public function  get_followers($id = NULL,$is_count=NULL,$limit,$offset)
     {
-        if($id == NULL){
+        if($id == NULL)
+        {
             $this->db->limit($limit, $offset);
             $this->db->order_by('activated', 'desc');
             $query = $this->db->get('members');
@@ -107,20 +116,24 @@ class Membership_model extends CI_Model{
         }
         else
         {
+            $this->db->select('members.username,members.id')->from('members')
+                ->join('relationships', 'members.id = relationships.user_to_id')
+                ->where_in('members.id',$id);
+            $query = $this->db->get();
             if($is_count==NULL)
             {
-                $this->db->select('user_from_id')
-                    ->from('relationships')
-                    ->where('user_to_id', $this->session->userdata('user_id'));
-                $chosen_id = $this->db->get();
-                foreach ($chosen_id->result_array() as $v)
-                        $followed_id[] = $v['user_from_id'];
-                $this->db->select('members.username,members.id')->from('members')
-                    ->join('relationships', 'members.id = relationships.user_from_id')->or_where('members.id', $followed_id);
-                $query = $this->db->get();
 
+//                $this->db->select('members.username,members.id')->from('members')
+//                    ->join('relationships', 'members.id = relationships.user_to_id')
+//                    ->where_in('members.id',$id);
+//                $query = $this->db->get();
                 return $query->num_rows();
             }
+            else
+            {
+                return $query->result_array();
+            }
+
 
         }
 

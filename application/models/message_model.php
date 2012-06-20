@@ -41,17 +41,33 @@ class Message_model extends CI_Model
         }
         else {
            // echo "<pre>";
-            $this->db->select('user_to_id')
-                    ->from('relationships')
-                        ->where('user_from_id', $this->session->userdata('user_id'));
+            $this->db->select('user_to_id')->from('relationships')->where('user_from_id', $this->session->userdata('user_id'));
             $chosen_id = $this->db->get();
-            foreach ($chosen_id->result_array() as $v) {
-                $followed_id[] = $v['user_to_id'];
+//            echo "<pre>";
+//            print_r ($chosen_id->result_array());
+//            echo "</pre>";
+//            exit;
+            if($chosen_id->num_rows() > 0)
+            {
+                foreach ($chosen_id->result_array() as $v) {
+                        $follow_id[] = $v['user_to_id'];
+                }
+
+                $this->db->select('members.username, messages.message, messages.created, messages.user_id,members.id')->from('members', 'messages')
+                    ->join('messages', 'members.id = messages.user_id')->where_in('members.id', $follow_id)->or_where('members.id',$this->session->userdata('user_id'))
+                    ->order_by('messages.created', 'desc');
+                $query=$this->db->get();
             }
-            $this->db->select('members.username, messages.message, messages.created, messages.user_id,members.id')->from('members', 'messages')
-                ->join('messages', 'members.id = messages.user_id')->or_where_in('members.id', $followed_id)->or_where('members.id',$id)
-                ->order_by('messages.created', 'desc');
-            $query=$this->db->get();
+            else
+            {
+                $this->db->select('members.id, members.username, messages.message, messages.created');
+                $this->db->from('members');
+                $this->db->join('messages', 'members.id=messages.user_id', 'left');
+                $this->db->where('members.id', $id);
+                $query = $this->db->get();
+
+            }
+
 
 
            // echo "</pre>";

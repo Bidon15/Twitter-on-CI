@@ -10,6 +10,7 @@
 class Users extends MY_Controller
 {
 
+
     public function __construct()
     {
         parent::__construct();
@@ -27,7 +28,7 @@ class Users extends MY_Controller
         $config['uri_segment'] = 3;
         $this->pagination->initialize($config);
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $data['results'] = $this->membership_model->get_followers(NULL, $config["per_page"], $page);
+        $data['results'] = $this->membership_model->get_followers(NULL,NULL, $config["per_page"], $page);
         $data['links'] = $this->pagination->create_links();
         $data['title'] = 'All users';
         $this->output('users/index', $data);
@@ -51,6 +52,7 @@ class Users extends MY_Controller
 
     public function show($id,$is_count=NULL)
     {
+
         $data['users'] = $this->membership_model->get_users($id);
         $data['if_followed'] = $this->membership_model->if_followed($id);
         $data['user_message'] = $this->message_model->get_messages($id);
@@ -58,8 +60,8 @@ class Users extends MY_Controller
 //        print_r ($data['count_followers'] = $this->membership_model->get_followers($id,$is_count,0,0));
 //        echo "</pre>";
 //        exit;
-        @$data['count_followers'] = $this->membership_model->get_followers($id,$is_count);
-        @$data['count_followings'] = $this->membership_model->get_followings($id,$is_count);
+        $data['count_followers'] = $this->membership_model->get_followers($id, FALSE, NULL, NULL);
+        $data['count_followings'] = $this->membership_model->get_followings($id,FALSE, NULL, NULL);
 
 //        echo '<pre>';
 //        print_r($this->message_model->get_messages($id));
@@ -107,10 +109,30 @@ class Users extends MY_Controller
 
     }
 
-    public function following()
+    public function following($id,$count_followings)
     {
 
+        $data['results'] = $this->membership_model->get_followings($id,$count_followings);
+        $data['user']=$this->membership_model->get_users($id);
+        $data['count_followings'] = $this->membership_model->get_followings($id,NULL);
+        $data['count_followers'] = $this->membership_model->get_followers($id, NULL);
+        $data['title'] = 'Following';
+        $this->output('users/following', $data);
     }
+
+    public function followers($id,$count_followers)
+    {
+
+
+        $data['results'] = $this->membership_model->get_followings($id,$count_followers,NULL,NULL);
+
+        $data['user']=$this->membership_model->get_users($id);
+        $data['count_followings'] = $this->membership_model->get_followings($id,NULL, NULL, NULL);
+        //$data['count_followers'] = $this->membership_model->get_followers($id, FALSE, NULL, NULL);
+        $data['title'] = 'Following';
+        $this->output('users/followers', $data);
+    }
+
 
 
 
