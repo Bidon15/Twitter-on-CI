@@ -31,7 +31,7 @@ class Users extends MY_Controller
         $data['results'] = $this->membership_model->get_followers(NULL,NULL, $config["per_page"], $page);
         $data['links'] = $this->pagination->create_links();
         $data['title'] = 'All users';
-        $this->output('users/index', $data);
+        $this->output('users/index', $data,'header');
 
     }
 
@@ -50,22 +50,15 @@ class Users extends MY_Controller
     }
 
 
-    public function show($id,$is_count=NULL)
+    public function show($id, $is_count=NULL)
     {
-
         $data['users'] = $this->membership_model->get_users($id);
         $data['if_followed'] = $this->membership_model->if_followed($id);
         $data['user_message'] = $this->message_model->get_messages($id);
-//        echo "<pre>";
-//        print_r ($data['count_followers'] = $this->membership_model->get_followers($id,$is_count,0,0));
-//        echo "</pre>";
-//        exit;
-        $data['count_followers'] = $this->membership_model->get_followers($id, FALSE, NULL, NULL);
-        $data['count_followings'] = $this->membership_model->get_followings($id,FALSE, NULL, NULL);
 
-//        echo '<pre>';
-//        print_r($this->message_model->get_messages($id));
-//        echo '</pre>';
+        $data['count_followers'] = $this->membership_model->get_followers($id, FALSE, NULL, NULL);
+        $data['count_followings'] = $this->membership_model->get_followings($id, FALSE, NULL, NULL);
+
         if (empty($data['users'])) {
             show_404();
         }

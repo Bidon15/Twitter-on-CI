@@ -33,7 +33,7 @@ class Sessions extends MY_Controller
                     $this->input->set_cookie($data);
                 redirect('users/index');
             }
-            $this->output('sessions/signin_form','');
+            $this->output('sessions/signin_form',' ',FALSE);
         }
         else{
             redirect('users/index');

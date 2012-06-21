@@ -40,7 +40,6 @@ class Message_model extends CI_Model
 
         }
         else {
-            echo "<pre>";
             $this->db->select('user_to_id')->from('relationships')->where('user_from_id', $this->session->userdata('user_id'));
             $chosen_id = $this->db->get();
             if($chosen_id->num_rows() > 0)
@@ -64,45 +63,6 @@ class Message_model extends CI_Model
 
             }
             return $query->result_array();
-
-
-
-           // echo "</pre>";
-            //exit;
-
-
-//            $this->db->select('user_to_id');
-//            $this->db->from('relationships');
-//            $this->db->where('user_from_id', $this->session->userdata('user_id'));
-//            $query = $this->db->get();
-//            $users_id = $query->result_array();
-//            foreach ($users_id as $k => $v) {
-//                $followed_id[] = $v['user_to_id'];
-//
-//            }
-//            $this->db->from('messages');
-//            $this->db->where('user_id', $this->session->userdata('user_id'));
-//            $this->db->or_where_in('user_id', $followed_id);
-//            $query = $this->db->get();
-//
-//            $this->db->select('username, id');
-//            $this->db->from('members');
-//            $this->db->where('id', $this->session->userdata('user_id'));
-//            $this->db->or_where_in('id', $followed_id);
-//
-//            $q = $this->db->get();
-////            echo '<pre>';
-////            print_r($q->result_array());
-////            echo '</pre>';
-//            $result = $query->result_array();
-//
-//            foreach ($q->result_array() as $qk => $qv) {
-//                foreach ($result as $query_k => &$query_v) {
-//                    if ($qv['id'] == $query_v['user_id']) {
-//                        $query_v['username'] = $qv['username'];
-//                    }
-//                }
-//            }
 
         }
 

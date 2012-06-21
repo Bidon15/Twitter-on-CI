@@ -7,13 +7,74 @@
  *
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
+#follow
+{
+
+}
+
+#show_user
+{
+    height: 100px;
+    width: 300px;
+    float:left;
+}
+
+#show_post
+{
+    width: 300px;
+    /*border-left: 1px solid #808080;*/
+    float: left;
+}
+
+
+#image
+{
+    float:left;
+    /*width:30%;*/
+    height:auto;
+}
+#username
+{
+    margin-left: 10px;
+    float:left;
+    /*width:30%;*/
+    height:50px;
+}
+#parent
+{
+    margin: 0 auto;
+    width:1000px;
+    height: 600px;
+    overflow: hidden;
+
+
+}
+.left
+{
+    float:left;
+    width:300px;
+
+}
+.right
+{
+    width:700px;
+    float:right;
+}
+footer
+{
+    clear: both;
+}
+#center
+{
+    margin: 0 auto;
+    width: 1000px;
+}
 
 article,
 aside,
 details,
 figcaption,
 figure,
-footer,
 header,
 hgroup,
 nav,

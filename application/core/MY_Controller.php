@@ -46,11 +46,8 @@ class MY_Controller extends CI_Controller{
 
     public function output($view_name,$content)
     {
-        //$data=$this->retrieve();
-        //$data = 'signin_form';
         $this->load->view('includes/header');
         $this->load->view($view_name,$content);
-
         $this->load->view('includes/footer');
     }
 
