@@ -88,10 +88,14 @@ class Membership_model extends CI_Model
             }
         }
         else {
-            $this->db->select('members.username,members.id')->from('members')
-                ->join('relationships', 'members.id = relationships.user_to_id')
-                ->where_in('members.id', $id);
+            $this->db->select('members.username,members.id,members.image,members.email_address')->from('members')
+                ->join('relationships', 'members.id = relationships.user_from_id')
+                ->where_in('relationships.user_to_id', $id);
             $query = $this->db->get();
+//            echo "<pre>test";
+//            print_r ($query->result_array());
+//            echo "</pre>";
+//            exit;
             if ($is_count == NULL) {
                 return $query->num_rows();
             }

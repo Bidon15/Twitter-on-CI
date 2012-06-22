@@ -7,9 +7,10 @@
  *
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
-#follow
+#header
 {
-
+    width:1000px;
+    margin: 0 auto;
 }
 
 #show_user
@@ -44,7 +45,7 @@
 {
     margin: 0 auto;
     width:1000px;
-    height: 600px;
+    height: 1000px;
     overflow: hidden;
 
 
@@ -837,8 +838,8 @@ textarea,
 select,
 .uneditable-input {
   display: inline-block;
-  width: 210px;
-  height: 18px;
+  width: 250px;
+  height: 30px;
   padding: 4px;
   margin-bottom: 9px;
   font-size: 13px;
@@ -4117,11 +4118,9 @@ input[type="submit"].btn.btn-mini {
 }
 
 .pager {
-  margin-bottom: 18px;
-  margin-left: 0;
-  text-align: center;
+  margin-bottom: 30px;
+  margin-left:4px;
   list-style: none;
-  *zoom: 1;
 }
 
 .pager:before,

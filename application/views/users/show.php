@@ -20,9 +20,10 @@
         if ($users['id'] == $this->session->userdata('user_id')):
             ?><div id="show_post"><?php
             echo form_open('messages/create');
+            $posted=array('name'=>'post','value'=>'Post','class'=>'btn btn-success');
             $text_area = array('cols' => '30', 'rows' => '4', 'name' => 'message');
             echo form_textarea($text_area);?><br/><?php
-            echo form_submit('post', 'Post');
+            echo form_submit($posted);
             echo form_close();
             ?>
             </div>
@@ -47,6 +48,7 @@
     <div class="right">
         <?php
         echo form_open('messages/delete');
+        $delete_post=array('name'=>'delete','value'=>'Delete','class'=>'btn btn-inverse');
         ?><blockquote><p>
         <?php
         foreach ($user_message as $k => $v) {
@@ -60,7 +62,7 @@
                     echo timespan($post_date, $now);
                 if ($v['id'] == $this->session->userdata('user_id')) {
                     form_hidden('message_id', $v['id']);
-                    echo form_submit('delete', 'Delete post');
+                    echo form_submit($delete_post);
                 }
                 ?></small><hr/><br/><br/><?php
             }

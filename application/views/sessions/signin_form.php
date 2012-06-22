@@ -1,4 +1,4 @@
-
+<div id='parent'>
     <h1 align="center" style="font-size: 33pt;">Sign In</h1>
     <?php
     echo $this->session->flashdata('activation');
@@ -15,3 +15,4 @@
     <?php echo form_submit($submit);?>
     </div>
 
+</div>
