@@ -30,9 +30,9 @@ class Message_model extends CI_Model
     public function get_messages($id)
     {
         if ($id != $this->session->userdata('user_id')) {
-            $this->db->select('members.id, members.username, messages.message, messages.created,message.id');
+            $this->db->select('members.id, members.username, messages.message, messages.created,messages.id,messages.user_id');
             $this->db->from('members');
-            $this->db->join('messages', 'members.id=messages.user_id', 'left');
+            $this->db->join('messages', 'members.id=messages.user_id');
             $this->db->where('members.id', $id);
             $query = $this->db->get();
 
