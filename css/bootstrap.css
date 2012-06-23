@@ -7,6 +7,20 @@
  *
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
+
+#delete_post a
+{
+    color: #f5f5f5;
+}
+
+#delete_post a:hover
+{
+
+    text-decoration: none;
+}
+
+
+
 #header
 {
     width:1000px;

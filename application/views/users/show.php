@@ -1,4 +1,5 @@
 <div id="parent">
+
     <div class="left">
         <div id="show_user">
             <div id="image">
@@ -18,14 +19,15 @@
 
         <?php
         if ($users['id'] == $this->session->userdata('user_id')):
-            ?><div id="show_post"><?php
-            echo form_open('messages/create');
-            $posted=array('name'=>'post','value'=>'Post','class'=>'btn btn-success');
-            $text_area = array('cols' => '30', 'rows' => '4', 'name' => 'message');
-            echo form_textarea($text_area);?><br/><?php
-            echo form_submit($posted);
-            echo form_close();
             ?>
+            <div id="show_post"><?php
+                echo form_open('messages/create');
+                $posted = array('name' => 'post', 'value' => 'Post', 'class' => 'btn btn-success');
+                $text_area = array('cols' => '30', 'rows' => '4', 'name' => 'message');
+                echo form_textarea($text_area);?><br/><?php
+                echo form_submit($posted);
+                echo form_close();
+                ?>
             </div>
 
             <?php else :
@@ -46,30 +48,24 @@
         ?>
     </div>
     <div class="right">
-        <?php
-        echo form_open('messages/delete');
-        $delete_post=array('name'=>'delete','value'=>'Delete','class'=>'btn btn-inverse');
-        ?><blockquote><p>
-        <?php
-        foreach ($user_message as $k => $v) {
-
-            if (isset($v['message'])) {
-                echo $v['username'] . '&nbsp;&nbsp;Wrote:&nbsp;&nbsp;&nbsp;&nbsp;';
-                echo $v['message'];?></p><br/><small>
-                <?php
-                    $post_date = $v['created'];
+        <blockquote><p>
+            <?php
+            foreach ($user_message as $k):
+                echo $k['username'] . '&nbsp;&nbsp;Wrote:&nbsp;&nbsp;&nbsp;&nbsp;';
+                echo $k['message'];?></p><br/>
+                <small>
+                    <?php
+                    $post_date = $k['created'];
                     $now = time();
                     echo timespan($post_date, $now);
-                if ($v['id'] == $this->session->userdata('user_id')) {
-                    form_hidden('message_id', $v['id']);
-                    echo form_submit($delete_post);
-                }
-                ?></small><hr/><br/><br/><?php
-            }
-        }
-        echo form_close();
-        ?>
-    </blockquote>
+                    if ($k['user_id'] == $this->session->userdata('user_id'))
+                        echo anchor('messages/delete/' . $k['id'], 'Delete', array('class' => 'btn btn-danger'));
+                    ?></small>
+                <hr/><br/><br/>
+                <?php
+            endforeach;
+            ?>
+        </blockquote>
     </div>
 </div>
 

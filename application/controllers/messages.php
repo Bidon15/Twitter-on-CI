@@ -7,7 +7,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class Messages extends MY_Controller {
+class Messages extends MY_Controller
+{
 
     public function __construct()
     {
@@ -17,21 +18,18 @@ class Messages extends MY_Controller {
 
     public function create()
     {
-        if($this->input->post('post'))
-        {
+        if ($this->input->post('post')) {
             $this->message_model->create();
         }
-        redirect('users/show/'.$this->session->userdata('user_id'));
+        redirect('users/show/' . $this->session->userdata('user_id'));
 
     }
 
-    public function delete()
+    public function delete($id)
     {
-        if($this->input->post('delete'))
-        {
-            $this->message_model->delete();
-        }
-        redirect('users/show/'.$this->session->userdata('user_id'));
+        $this->message_model->delete($id);
+
+        redirect('users/show/' . $this->session->userdata('user_id'));
     }
 
 

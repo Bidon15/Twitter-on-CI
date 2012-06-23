@@ -20,17 +20,17 @@ class Message_model extends CI_Model
         $this->db->insert('messages', $new_message);
     }
 
-    public function delete()
+    public function delete($id)
     {
         $this->db->where('user_id', $this->session->userdata('user_id'));
-        $this->db->where('id', $this->input->post('message_id'));
+        $this->db->where('id', $id);
         $this->db->delete('messages');
     }
 
     public function get_messages($id)
     {
         if ($id != $this->session->userdata('user_id')) {
-            $this->db->select('members.id, members.username, messages.message, messages.created');
+            $this->db->select('members.id, members.username, messages.message, messages.created,message.id');
             $this->db->from('members');
             $this->db->join('messages', 'members.id=messages.user_id', 'left');
             $this->db->where('members.id', $id);
@@ -48,7 +48,7 @@ class Message_model extends CI_Model
                         $follow_id[] = $v['user_to_id'];
                 }
 
-                $this->db->select('members.username, messages.message, messages.created, messages.user_id,members.id')->from('members', 'messages')
+                $this->db->select('members.username, messages.message, messages.created, messages.user_id,members.id,messages.id')->from('members', 'messages')
                     ->join('messages', 'members.id = messages.user_id')->where_in('members.id', $follow_id)->or_where('members.id',$this->session->userdata('user_id'))
                     ->order_by('messages.created', 'desc');
                 $query=$this->db->get();

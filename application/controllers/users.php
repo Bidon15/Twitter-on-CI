@@ -70,7 +70,10 @@ class Users extends MY_Controller
 
         if ($this->input->post('change')) {
             $this->load->library('form_validation');
-            $this->form_validation->set_rules('email_address', 'Email Address', 'trim|required|valid_email|is_unique[members.email_address]');
+            if($this->input->post('new_email_address')!= '')
+            {
+                $this->form_validation->set_rules('email_address', 'Email Address', 'trim|required|valid_email|is_unique[members.email_address]');
+            }
             $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|min_length[4]');
             $this->form_validation->set_rules('new_password2', 'New Password Again', 'trim|required|matches[new_password]');
             if ($this->form_validation->run() == FALSE) {

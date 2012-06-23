@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 <footer>
     <div id="center">
     <hr/>

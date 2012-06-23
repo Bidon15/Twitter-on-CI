@@ -8,19 +8,19 @@
     <div class="navbar">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" style="margin-left: 7%; color: #f5f5f5;"
+                <a class="brand" style="color: #f5f5f5;"
                    href="http://localhost/twitter/index.php/sessions/signin">Twitter on CI</a>
 
                 <div class="nav-collapse">
-                    <ul class="nav pull-right" style="margin-right: 10%;">
-                        <?php if (!$this->session->userdata('user_id')) { ?>
+                    <ul class="nav pull-right">
+                        <?php if (!$this->session->userdata('user_id')) : ?>
                         <li>
                             <?php echo anchor('sessions/signup', 'Sign Up') ?>
                         </li>
                         <li>
                             <?php echo anchor('sessions/help', 'Help')?>
                         </li>
-                        <?php } else { ?>
+                        <?php  else : ?>
                         <li>
                             <?php echo anchor('users/edit', 'Edit My Profile');?>
                         </li>
@@ -32,7 +32,7 @@
                         </li>
                     <li>
                         <?php echo anchor('sessions/signout', 'Sign Out');
-                    } ?>
+                    endif; ?>
                     </li>
                     </ul>
                 </div>

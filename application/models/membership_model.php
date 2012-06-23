@@ -134,16 +134,24 @@ class Membership_model extends CI_Model
 
     public function update_user()
     {
-
         $this->db->where('password', md5($this->input->post('password')));
         $this->db->where('id', $this->session->userdata('user_id'));
         $query = $this->db->get('members');
         if ($query->num_rows() == 1) {
+            if($this->input->post('new_email_address')=='')
+            {
+                $updated_data = array(
+                    'password' => md5($this->input->post('new_password'))
+                );
+            }
+            else
+            {
+                $updated_data = array(
+                    'email_address' => $this->input->post('email_address'),
+                    'password' => md5($this->input->post('new_password'))
+                );
 
-            $updated_data = array(
-                'email_address' => $this->input->post('email_address'),
-                'password' => md5($this->input->post('new_password'))
-            );
+            }
             $this->db->where('id', $this->session->userdata('user_id'));
             $this->db->update('members', $updated_data);
         }

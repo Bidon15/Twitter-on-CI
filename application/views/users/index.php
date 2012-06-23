@@ -3,6 +3,7 @@
 
     <div class="pager">
         <?php echo '<ul>' . $links . '</ul>';?>
+    </div>
 
         <hr/>
         <?php foreach ($results as $user): ?>
@@ -20,4 +21,3 @@
 
 
         <?php endforeach;?></div>
-</div>
