@@ -14,7 +14,11 @@ class Users extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->check_permission();
+        if($this->uri->segment(2)=='activation')
+        {
+            $this->check_permission();
+        }
+
         $this->load->model('membership_model');
         $this->load->model('message_model');
 
@@ -37,6 +41,7 @@ class Users extends MY_Controller
 
     public function activation($activation_key)
     {
+
         if ($this->membership_model->activate_user($activation_key)) {
             $this->session->set_flashdata('activation', 'Your account has been activated. Please sign in and start trolling.');
             redirect('sessions/signin');
@@ -76,13 +81,10 @@ class Users extends MY_Controller
             }
             $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|min_length[4]');
             $this->form_validation->set_rules('new_password2', 'New Password Again', 'trim|required|matches[new_password]');
-            if ($this->form_validation->run() == FALSE) {
-                $this->output('users/edit', '');
-            }
-            else {
+            if ($this->form_validation->run() == TRUE) {
                 $this->membership_model->update_user();
-
             }
+
         }
         if ($this->input->post('upload')) {
 
