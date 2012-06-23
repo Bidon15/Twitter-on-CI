@@ -93,10 +93,7 @@ class Membership_model extends CI_Model
                 ->join('relationships', 'members.id = relationships.user_from_id')
                 ->where_in('relationships.user_to_id', $id);
             $query = $this->db->get();
-//            echo "<pre>test";
-//            print_r ($query->result_array());
-//            echo "</pre>";
-//            exit;
+
             if ($is_count == NULL) {
                 return $query->num_rows();
             }
